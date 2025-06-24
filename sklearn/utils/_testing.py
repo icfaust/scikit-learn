@@ -1343,6 +1343,11 @@ def _array_api_for_tests(array_namespace, device):
                 "MPS is not available because the current PyTorch install was not "
                 "built with MPS enabled."
             )
+    elif array_namespace == "torch" and device == "xpu":
+        if not hasattr(xp, "xpu"):
+           raise SkipTest("PyTorch install was not built with xpu capability")
+        elif not xp.xpu.is_available():
+           raise SkipTest("Intel GPU is unavailable")
     elif array_namespace == "cupy":  # pragma: nocover
         import cupy
 
